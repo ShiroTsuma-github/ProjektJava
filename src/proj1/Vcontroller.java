@@ -16,11 +16,14 @@ import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JMenu;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-public class Vcontroller implements ActionListener{
+public class Vcontroller implements ActionListener, ListSelectionListener{
     private TableModel model;
     private View view;
     private ListModel listModel;
@@ -72,7 +75,7 @@ public class Vcontroller implements ActionListener{
         }
         else
         {
-            this.view.updateResult("Minimum: " + min + "\n");
+            this.view.addToResult("Minimum: " + min + "\n");
         }
         
     
@@ -87,7 +90,7 @@ public class Vcontroller implements ActionListener{
         }
         else
         {
-            this.view.updateResult("\n" + "Maksimum: " + max + "\n");
+            this.view.addToResult("\n" + "Maksimum: " + max + "\n");
         }
     }
 
@@ -187,8 +190,30 @@ public class Vcontroller implements ActionListener{
     }
 
     @Override
+    public void valueChanged(ListSelectionEvent e) {
+        Object source = e.getSource();
+        if (source instanceof JList) {
+            JList<String> list = (JList<String>) source;
+            String selectedOption = list.getSelectedValue();
+            switch (selectedOption) {
+                case "Suma elementów":
+                    handleSum();
+                    break;
+                case "Średnia elementów":
+                    handleAvg();
+                    break;
+                case "Wartość max i min":
+                    handleMinMax();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Action performed");
+        // System.out.println("Action performed");
         Object source = e.getSource();
         if (source instanceof JButton)
         {
@@ -246,11 +271,51 @@ public class Vcontroller implements ActionListener{
                     break;
             }
         }
+        else if( source instanceof JMenuItem)
+        {
+            JMenuItem button = (JMenuItem) source;
+            switch (button.getName()) {
+                case "Zapisz":
+                    handleSave();
+                    break;
+                case "Drukuj":
+                    handlePrint();
+                    break;
+                case "Wczytaj":
+                    handleLoad();
+                    break;
+                case "Wyczyść":
+                    handleClear();
+                    break;
+                case "Wyjście":
+                    System.exit(0);
+                    break;
+                case "Suma":
+                    handleSum();
+                    break;
+                case "Średnia":
+                    handleAvg();
+                    break;
+                case "Minimum":
+                    handleMin();
+                    break;
+                case "Maksimum":
+                    handleMax();
+                    break;
+                case "O programie":
+                    this.view.getAbout();
+                    break;
+                case "Pomoc":
+                    this.view.getHelp();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 
     public static void main(String[] args) {
         new Vcontroller();
     }
-    
 }

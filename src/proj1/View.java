@@ -25,7 +25,7 @@ public class View extends JFrame{
     private JMenuBar menuBar;
     private JMenu fileMenu, editMenu, helpMenu, viewMenu, calcMenu;
     private JMenuItem newMenuItem, openMenuItem, saveMenuItem, exitMenuItem, cutMenuItem, copyMenuItem, pasteMenuItem,
-                        aboutMenuItem, authorMenuItem;
+                        aboutMenuItem, authorMenuItem, sumMenuItem, averageMenuItem, minMenuItem, maxMenuItem;
     // zmienne do toolbara
     private JToolBar toolBar;
     private JButton saveButton, printButton, loadButton, addButton, clearButton, fillButton, sumButton, averageButton,
@@ -83,17 +83,31 @@ public class View extends JFrame{
         fileMenu = createJMenu("Plik", KeyEvent.VK_P, true);
         editMenu = createJMenu("Edycja", KeyEvent.VK_E, false);
         viewMenu = createJMenu("Widok", KeyEvent.VK_W, false);
-        calcMenu = createJMenu("Obliczenia", KeyEvent.VK_O, false);
+        calcMenu = createJMenu("Obliczenia", KeyEvent.VK_O, true);
         helpMenu = createJMenu("Pomoc", KeyEvent.VK_H, true);
         newMenuItem = new JMenuItem("Nowy");
+        newMenuItem.setName("Wyczyść");
         openMenuItem = new JMenuItem("Otwórz");
+        openMenuItem.setName("Wczytaj");
         saveMenuItem = new JMenuItem("Zapisz");
+        saveMenuItem.setName("Zapisz");
         exitMenuItem = new JMenuItem("Wyjście");
+        exitMenuItem.setName("Wyjście");
         cutMenuItem = new JMenuItem("Wytnij");
         copyMenuItem = new JMenuItem("Kopiuj");
         pasteMenuItem = new JMenuItem("Wklej");
-        aboutMenuItem = new JMenuItem("O programie");
+        sumMenuItem = new JMenuItem("Suma");
+        sumMenuItem.setName("Suma");
+        averageMenuItem = new JMenuItem("Średnia");
+        averageMenuItem.setName("Średnia");
+        minMenuItem = new JMenuItem("Minimum");
+        minMenuItem.setName("Minimum");
+        maxMenuItem = new JMenuItem("Maksimum");
+        maxMenuItem.setName("Maksimum");
+        aboutMenuItem = new JMenuItem("Pomoc");
+        aboutMenuItem.setName("Pomoc");
         authorMenuItem = new JMenuItem("Autor");
+        authorMenuItem.setName("O programie");
         // Menu plik
         fileMenu.add(newMenuItem);
         fileMenu.add(openMenuItem);
@@ -104,6 +118,11 @@ public class View extends JFrame{
         editMenu.add(cutMenuItem);
         editMenu.add(copyMenuItem);
         editMenu.add(pasteMenuItem);
+        // Menu obliczenia
+        calcMenu.add(sumMenuItem);
+        calcMenu.add(averageMenuItem);
+        calcMenu.add(minMenuItem);
+        calcMenu.add(maxMenuItem);
         // Menu pomocy
         helpMenu.add(aboutMenuItem);
         helpMenu.add(authorMenuItem);
@@ -123,6 +142,10 @@ public class View extends JFrame{
         copyMenuItem.addActionListener(controller);
         pasteMenuItem.addActionListener(controller);
         exitMenuItem.addActionListener(controller);
+        sumMenuItem.addActionListener(controller);
+        averageMenuItem.addActionListener(controller);
+        minMenuItem.addActionListener(controller);
+        maxMenuItem.addActionListener(controller);
         aboutMenuItem.addActionListener(controller);
         authorMenuItem.addActionListener(controller);
     }
@@ -230,33 +253,8 @@ public class View extends JFrame{
         resultsArea.setEditable(false);
         JList<String> optionsList = new JList<>(listModel.getOptions());
         optionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        // optionsList.addListSelectionListener(e -> {
-        //     if (!e.getValueIsAdjusting()) {
-        //         String selectedOption = optionsList.getSelectedValue();
-        //         switch (selectedOption) {
-        //             case "Suma elementów":
-        //                 handleSum();
-        //                 break;
-        //             case "Średnia elementów":
-        //                 handleAvg();
-        //                 break;
-        //             case "Wartość max i min":
-        //                 handleMinMax();
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     }
-        // });
-        
-        // optionsList.addListSelectionListener(e -> {
-        //     if (!e.getValueIsAdjusting()) {
-        //         String selectedOption = optionsList.getSelectedValue();
-        //         controller.handleTextAction(selectedOption);
-        //     }
-        // });
-        // Panel for fields adding values to table
-        // Added to mainPanel
+        optionsList.addListSelectionListener(controller);
+
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new GridLayout(1, 3, 5, 5));
         controlPanel.add(wartoscLabel);
@@ -349,12 +347,11 @@ public class View extends JFrame{
     {
         resultsArea.setText(text);
     }
-    public void addOptionSelectionListener(ListSelectionListener listener) {
-        optionsList.addListSelectionListener(listener);
+    public void addToResult(String text)
+    {
+        resultsArea.append(text);
     }
-    public String getSelectedOption() {
-        return (String) optionsList.getSelectedValue();
-    }
+
     public JTable getTable() {
         return table;
     }
