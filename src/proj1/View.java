@@ -47,7 +47,7 @@ public class View extends JFrame{
 
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-    static final String TITLE = "Aplikacja";
+    static final String TITLE = "Aplikacja MVC";
 
     public View(TableModel model, ListModel listModel, Vcontroller controller) {
         this.tableModel = model;

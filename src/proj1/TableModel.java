@@ -21,9 +21,11 @@ public class TableModel extends AbstractTableModel{
             int colPos = (int) column;
             if (value == null) {
                 data[rowPos][colPos] = value;
+            } else if (value instanceof Double) {
+                data[rowPos][colPos] = value;
             }
             else{
-                data[rowPos][colPos] = (double) value;
+                data[rowPos][colPos] = Double.parseDouble((String) value);
             }
         } catch( NullPointerException np) {
             throw new NullPointerException();
