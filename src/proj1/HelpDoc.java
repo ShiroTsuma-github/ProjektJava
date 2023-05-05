@@ -3,7 +3,6 @@ package proj1;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.net.URL;
 
@@ -24,12 +23,6 @@ public class HelpDoc extends JDialog{
         setTitle("Pomoc");
         setVisible(true);
         setResizable(true);
-
-        addWindowListener( new  WindowAdapter() {
-            public void windowClosing(WindowAdapter e){
-                setVisible(false);
-            }
-        });
 
         Dimension dialogSize = getSize();		
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  

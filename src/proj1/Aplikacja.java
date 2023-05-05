@@ -1,6 +1,5 @@
 package proj1;
 
-import javax.sound.sampled.BooleanControl;
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 
@@ -140,7 +139,7 @@ public class Aplikacja extends JFrame implements ActionListener{
         toolBar.add(saveButton);
         printButton = new JButton(createImageIcon("/grafika/printer.png"));
         toolBar.add(printButton);
-        loadButton = new JButton(createImageIcon("/grafika/logout.png"));
+        loadButton = new JButton(createImageIcon("/grafika/load.png"));
         toolBar.add(loadButton);
         toolBar.add(Box.createHorizontalStrut(10));
 
@@ -202,9 +201,13 @@ public class Aplikacja extends JFrame implements ActionListener{
         // left six just to show exception handling
         table = new JTable(5, 5);
         bodyAddButton = new JButton("Dodaj    ", createImageIcon("/grafika/add.png", 20));
+        bodyAddButton.setToolTipText("Body dodaj");
         bodyClearButton = new JButton("Wyzeruj", createImageIcon("/grafika/clear.png", 20));
+        bodyClearButton.setToolTipText("Body wyzeruj");
         bodyFillButton = new JButton("Wypełnij", createImageIcon("/grafika/disc.png", 20));
+        bodyFillButton.setToolTipText("Body wypełnij");
         bodySaveButton = new JButton("Zapisz  ", createImageIcon("/grafika/save.png", 20));
+        bodySaveButton.setToolTipText("Body zapisz");
         bodyAddButton.setPreferredSize(new Dimension(110, 30));
         bodyClearButton.setPreferredSize(new Dimension(110, 30));
         bodyFillButton.setPreferredSize(new Dimension(110, 30));
@@ -434,12 +437,15 @@ public class Aplikacja extends JFrame implements ActionListener{
     private void handlePrint()
     {
         PrinterJob job = PrinterJob.getPrinterJob();
+        Boolean wasHere = false;
         job.setPrintable(new Printable() {
             @Override
             public int print(Graphics g, PageFormat pf, int pageIndex) {
                 if (pageIndex != 0) {
                     return NO_SUCH_PAGE;
                 }
+                if(wasHere) return NO_SUCH_PAGE;
+                Boolean wasHere = true;
 
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.translate(pf.getImageableX(), pf.getImageableY());
@@ -448,8 +454,12 @@ public class Aplikacja extends JFrame implements ActionListener{
                 try {
                     MessageFormat header = new MessageFormat("Table Print");
                     MessageFormat footer = new MessageFormat("- {0} -");
-                    table.print(mode, header, footer);
-                    return PAGE_EXISTS;
+                    Boolean cont = table.print(mode, header, footer);
+                    if (cont) {
+                        return PAGE_EXISTS;
+                    } else {
+                        return NO_SUCH_PAGE;
+                    }
                 } catch (PrinterException ex) {
                     JOptionPane.showMessageDialog(null, "Printing failed: " + ex.getMessage());
                     return NO_SUCH_PAGE;
@@ -457,14 +467,11 @@ public class Aplikacja extends JFrame implements ActionListener{
             }
         });
         
-        boolean doPrint = job.printDialog();
-        if (doPrint) {
             try {
                 job.print();
             } catch (PrinterException ex) {
                 JOptionPane.showMessageDialog(null, "Printing failed: " + ex.getMessage());
             }
-        }
     }
 
     private void handleSave(){
@@ -505,14 +512,15 @@ public class Aplikacja extends JFrame implements ActionListener{
             }
     }
     }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == newMenuItem) {
-            handleClear();;
+            handleClear();
         } else if (source == openMenuItem) {
-            handleLoad();;
+            handleLoad();
         } else if ((source == saveMenuItem) || (source == saveButton) || (source == bodySaveButton)) {
             handleSave();
         } else if (source == cutMenuItem) {
@@ -568,9 +576,9 @@ public class Aplikacja extends JFrame implements ActionListener{
             handleLoad();
         }
     }
+    // public static void main(String[] args) {
 
-    public static void main(String[] args) {
-        new Aplikacja();
-    }
+    //     new Aplikacja();
+    // }
     
 }
