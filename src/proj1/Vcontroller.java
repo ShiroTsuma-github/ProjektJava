@@ -67,7 +67,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener{
 
     private void handleMin(Boolean... args)
     {
-        double min = this.model.getMin();
+        int min = this.model.getMin();
         if(args.length == 0)
         {
             this.view.updateResult("Minimum: " + min);
@@ -82,7 +82,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener{
 
     private void handleMax(Boolean... args)
     {
-        double max = this.model.getMax();
+        int max = this.model.getMax();
         if(args.length == 0)
         {
             this.view.updateResult("Maksimum: " + max);
@@ -170,11 +170,8 @@ public class Vcontroller implements ActionListener, ListSelectionListener{
                     String line = scanner.nextLine();
                     String[] cells = line.split(",");
                     for (int col = 0; col < cells.length; col++) {
-                        if (cells[col].equals("null")) {
-                            this.model.setValueAt(null, row, col);
-                            continue;
-                        }
-                        this.model.setValueAt(Double.parseDouble(cells[col]), row, col);
+                        
+                        this.model.setValueAt(Integer.parseInt(cells[col]), row, col);
                     }
                     row++;
                 }

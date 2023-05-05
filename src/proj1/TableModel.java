@@ -9,6 +9,11 @@ public class TableModel extends AbstractTableModel{
 
     public TableModel(int rows, int columns) {
         data = new Object[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for(int j = 0; j < columns; j++){
+                data[i][j] = 0;
+            }
+        }
     }
 
     public Object getValueAt(int row, int column) {
@@ -19,13 +24,11 @@ public class TableModel extends AbstractTableModel{
         try {
             int rowPos = (int) row;
             int colPos = (int) column;
-            if (value == null) {
-                data[rowPos][colPos] = value;
-            } else if (value instanceof Double) {
+            if (value instanceof Integer) {
                 data[rowPos][colPos] = value;
             }
             else{
-                data[rowPos][colPos] = Double.parseDouble((String) value);
+                data[rowPos][colPos] = Integer.parseInt((String) value);
             }
         } catch( NullPointerException np) {
             throw new NullPointerException();
@@ -49,15 +52,15 @@ public class TableModel extends AbstractTableModel{
         return true;
     }
 
-    public double getSum()
+    public int getSum()
     {
-        double sum = 0;
+        int sum = 0;
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
                 if(data[i][j] == null) {
                     continue;
                 }
-                sum += (double) data[i][j];
+                sum += (int) data[i][j];
             }
         }
         return sum;
@@ -65,14 +68,14 @@ public class TableModel extends AbstractTableModel{
 
     public double getAverage()
     {
-        double sum = 0;
+        int sum = 0;
         int count = 0;
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
                 if(data[i][j] == null) {
                     continue;
                 }
-                sum += (double) data[i][j];
+                sum += (int) data[i][j];
                 count ++;
             }
         }
@@ -80,33 +83,33 @@ public class TableModel extends AbstractTableModel{
         return (double) sum / count;
     }
 
-    public double getMin()
+    public int getMin()
     {
-        double min = Double.POSITIVE_INFINITY;
+        int min = Integer.MAX_VALUE;
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
                 if(data[i][j] == null) {
                     continue;
                 }
-                if ((double) data[i][j] < min) {
-                    min = (double) data[i][j];
+                if ((int) data[i][j] < min) {
+                    min = (int) data[i][j];
                 }
             }
         }
-        min = min == Double.POSITIVE_INFINITY ? 0 : min;
+        min = min == Integer.MAX_VALUE ? 0 : min;
         return min;
     }
 
-    public double getMax()
+    public int getMax()
     {
-        double max = Double.NEGATIVE_INFINITY;
+        int max = Integer.MIN_VALUE;
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
                 if(data[i][j] == null) {
                     continue;
                 }
-                if ((double) data[i][j] > max) {
-                    max = (double) data[i][j];
+                if ((int) data[i][j] > max) {
+                    max = (int) data[i][j];
                 }
             }
         }
@@ -119,7 +122,7 @@ public class TableModel extends AbstractTableModel{
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
                 double value = Math.random() * -200 + 100;
-                this.data[i][j] = value;
+                this.data[i][j] = (int) value;
             }
         }
         fireTableDataChanged();

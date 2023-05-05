@@ -17,7 +17,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class View extends JFrame{
     
@@ -225,7 +224,7 @@ public class View extends JFrame{
 
         JLabel wartoscLabel = new JLabel("Wprowadź liczbę:");
         wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        wartosc = createNumberTextField();
+        wartosc = new JFormattedTextField(0);
         wartosc.setMargin(new Insets(5, 5, 5, 5));
 
         JLabel wierszLabel = new JLabel("Numer wiersza:");
@@ -316,19 +315,6 @@ public class View extends JFrame{
 		jMenu.setEnabled(enable);
 		return jMenu;
 	}
-
-    public JFormattedTextField createNumberTextField() {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        NumberFormat floatFormat = new DecimalFormat("#0.00", symbols);
-        NumberFormatter floatFormatter = new NumberFormatter(floatFormat);
-        floatFormatter.setValueClass(Float.class);
-        floatFormatter.setMinimum(Float.NEGATIVE_INFINITY);
-        floatFormatter.setMaximum(Float.MAX_VALUE);
-        floatFormatter.setAllowsInvalid(true);
-        floatFormatter.setCommitsOnValidEdit(true);
-        return new JFormattedTextField(floatFormatter);
-    }
 
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
