@@ -21,8 +21,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
-public class Vcontroller implements ActionListener, ListSelectionListener{
+public class Vcontroller implements ActionListener, ListSelectionListener, TableModelListener{
     private TableModel model;
     private View view;
     private ListModel listModel;
@@ -37,7 +39,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener{
     private void handleAdd()
     {
         try {
-            this.model.setValueAt(Double.parseDouble(this.view.getInputValue()),(int) view.getInputRow() - 1, (int) view.getInputColumn() - 1);
+            this.model.setValueAt(Integer.parseInt(this.view.getInputValue()),(int) view.getInputRow() - 1, (int) view.getInputColumn() - 1);
         } catch (NullPointerException np) {
             this.view.showMessage( "Brak danych do wprowadzenia");
         } catch (NumberFormatException se) {
@@ -183,6 +185,13 @@ public class Vcontroller implements ActionListener, ListSelectionListener{
                 this.view.showMessage("Loading failed: " + ex.getMessage());
             }
     }
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e)
+    {
+        this.model.incUpdateCount();
+        this.view.updateResult("Ilość zmian tabeli: " + this.model.getUpdateCount());
     }
 
     @Override

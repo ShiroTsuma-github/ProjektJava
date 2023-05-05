@@ -236,6 +236,7 @@ public class View extends JFrame{
         kolumna = new JSpinner(new SpinnerNumberModel(1, 1, this.tableModel.getColumnCount() + 1, 1));
         // left six just to show exception handling
         table = new JTable(this.tableModel);
+        this.tableModel.addTableModelListener(controller);
         bodyAddButton = new JButton("Dodaj    ", createImageIcon("/grafika/add.png", 20));
         bodyAddButton.setToolTipText("Body dodaj");
         bodyClearButton = new JButton("Wyzeruj", createImageIcon("/grafika/clear.png", 20));

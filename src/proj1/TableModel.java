@@ -5,6 +5,7 @@ import javax.swing.table.AbstractTableModel;
 
 public class TableModel extends AbstractTableModel{
     private Object[][] data;
+    private int tableUpdateCount = 0;
     
 
     public TableModel(int rows, int columns) {
@@ -14,6 +15,13 @@ public class TableModel extends AbstractTableModel{
                 data[i][j] = 0;
             }
         }
+    }
+
+    public void incUpdateCount(){
+        tableUpdateCount++;
+    }
+    public int getUpdateCount(){
+        return tableUpdateCount;
     }
 
     public Object getValueAt(int row, int column) {
