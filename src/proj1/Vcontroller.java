@@ -8,10 +8,13 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -24,15 +27,23 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-public class Vcontroller implements ActionListener, ListSelectionListener, TableModelListener{
+import com.toedter.calendar.JCalendar;
+
+public class Vcontroller implements ActionListener, ListSelectionListener, TableModelListener, PropertyChangeListener{
     private TableModel model;
     private View view;
     private ListModel listModel;
+    private JCalendar calendar;
+    private Histogram histogram;
 
     public Vcontroller() {
+        Locale.setDefault(new Locale("pl", "PL"));
         this.model = new TableModel(5, 5);
         this.listModel = new ListModel();
-        this.view = new View(model, listModel, this);
+        this.calendar = new JCalendar();
+        this.histogram = new Histogram();
+        this.updateChart();
+        this.view = new View(model, listModel, this, this.calendar, this.histogram);
         this.model.toggleCellsEdit(false);
         this.view.showView();
     }
@@ -188,10 +199,21 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
     }
     }
 
+    private void updateChart()
+    {
+        this.histogram.reset();
+        for (int i = 0; i < this.model.getRowCount(); i++) {
+            for (int j = 0; j < this.model.getColumnCount(); j++) {
+                this.histogram.updateDataset((int) this.model.getValueAt(i, j));
+            }
+        }
+    }
+
     @Override
     public void tableChanged(TableModelEvent e)
     {
         this.model.incUpdateCount();
+        this.updateChart();
         this.view.updateResult("Ilość zmian tabeli: " + this.model.getUpdateCount());
     }
 
@@ -318,6 +340,21 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
                     break;
             }
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Object source = evt.getSource();
+        if (source instanceof JCalendar) {
+            JCalendar calendar = (JCalendar) source;
+            if (calendar.getDate() != null) {
+                if (this.view != null)
+                {
+                    this.view.updateResult("Wybrana data: " + calendar.getDate().toString());
+                }
+            }
+        }
+        // System.out.println(ev.getnewValue());
     }
 
 

@@ -2,6 +2,8 @@ package proj1;
 
 import javax.swing.*;
 
+import com.toedter.calendar.JCalendar;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -39,17 +41,26 @@ public class View extends JFrame{
     private TableModel tableModel;
     private ListModel listModel;
     private Vcontroller controller;
+    private JCalendar calendar;
+    private Histogram histogram;
 
-    static final int WIDTH = 800;
-    static final int HEIGHT = 600;
+    static final int WIDTH = 1400;
+    static final int HEIGHT = 800;
     static final String TITLE = "Aplikacja MVC";
 
-    public View(TableModel model, ListModel listModel, Vcontroller controller) {
+    public View(TableModel model,
+                ListModel listModel,
+                Vcontroller controller,
+                JCalendar calendar, 
+                Histogram histogram) {
         this.tableModel = model;
         this.listModel = listModel;
         this.controller = controller;
+        this.calendar = calendar;
+        this.histogram = histogram;
         setTitle(TITLE);
         setSize(WIDTH, HEIGHT);
+        setMinimumSize(new Dimension(WIDTH, HEIGHT));
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width/2 - getWidth()/2, dim.height/2 - getHeight()/2);
     
@@ -281,7 +292,13 @@ public class View extends JFrame{
         // Temporary panel for adding optionListPanel to place it on the right bottom side
         // Added to tablePanel
         JPanel tempPanel = new JPanel(new BorderLayout());
-        tempPanel.add(optionListPanel, BorderLayout.WEST);
+        JPanel temp2 = new JPanel(new BorderLayout());
+        temp2.add(optionListPanel, BorderLayout.WEST);
+        temp2.add(this.histogram, BorderLayout.EAST);
+        this.calendar.addPropertyChangeListener(controller);
+        this.calendar.setPreferredSize(new Dimension(400, 200));
+        tempPanel.add(this.calendar, BorderLayout.EAST);
+        tempPanel.add(temp2, BorderLayout.WEST);
         // Main panel for things related to table
         // Added to mainPanel
         JPanel tablePanel = new JPanel(new BorderLayout());

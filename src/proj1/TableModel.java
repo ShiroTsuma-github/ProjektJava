@@ -144,9 +144,10 @@ public class TableModel extends AbstractTableModel{
 
     public void clear()
     {
+        fireTableDataChanged();
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
-                this.data[i][j] = null;
+                this.data[i][j] = 0;
                 // Maybe need to set to 0 instead of null?
             }
         }
