@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 public class TableModel extends AbstractTableModel{
     private Object[][] data;
     private int tableUpdateCount = 0;
+    private boolean editable = true;
     
 
     public TableModel(int rows, int columns) {
@@ -15,6 +16,11 @@ public class TableModel extends AbstractTableModel{
                 data[i][j] = 0;
             }
         }
+    }
+
+    public void toggleCellsEdit(boolean editable)
+    {
+        this.editable = editable;
     }
 
     public void incUpdateCount(){
@@ -57,7 +63,7 @@ public class TableModel extends AbstractTableModel{
     }
 
     public boolean isCellEditable(int row, int column) {
-        return true;
+        return this.editable;
     }
 
     public int getSum()

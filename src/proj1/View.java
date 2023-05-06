@@ -1,11 +1,7 @@
 package proj1;
 
 import javax.swing.*;
-import javax.swing.text.NumberFormatter;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -24,7 +20,7 @@ public class View extends JFrame{
     private JMenuBar menuBar;
     private JMenu fileMenu, editMenu, helpMenu, viewMenu, calcMenu;
     private JMenuItem newMenuItem, openMenuItem, saveMenuItem, exitMenuItem, cutMenuItem, copyMenuItem, pasteMenuItem,
-                        aboutMenuItem, authorMenuItem, sumMenuItem, averageMenuItem, minMenuItem, maxMenuItem;
+                      aboutMenuItem, authorMenuItem, sumMenuItem, averageMenuItem, minMenuItem, maxMenuItem;
     // zmienne do toolbara
     private JToolBar toolBar;
     private JButton saveButton, printButton, loadButton, addButton, clearButton, fillButton, sumButton, averageButton,

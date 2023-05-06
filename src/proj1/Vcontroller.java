@@ -33,6 +33,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
         this.model = new TableModel(5, 5);
         this.listModel = new ListModel();
         this.view = new View(model, listModel, this);
+        this.model.toggleCellsEdit(false);
         this.view.showView();
     }
 
