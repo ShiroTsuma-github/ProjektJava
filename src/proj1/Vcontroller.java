@@ -2,8 +2,10 @@ package proj1;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -13,7 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -21,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
-import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -135,42 +135,68 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
     private void handlePrint()
     {
         PrinterJob job = PrinterJob.getPrinterJob();
-        Boolean wasHere = false;
-        View view = this.view;
+        Histogram histogram = this.histogram;
+        Image image = histogram.getChartImage();
         job.setPrintable(new Printable() {
             @Override
-            public int print(Graphics g, PageFormat pf, int pageIndex) {
-                if (pageIndex != 0) {
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                if (pageIndex > 0) {
                     return NO_SUCH_PAGE;
                 }
-                if(wasHere) return NO_SUCH_PAGE;
-                Boolean wasHere = true;
+        
+                Graphics2D g2d = (Graphics2D) graphics;
+        
 
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.translate(pf.getImageableX(), pf.getImageableY());
+                int imageWidth = image.getWidth(null);
+                int imageHeight = image.getHeight(null);
+                int x = (int) pageFormat.getImageableX() + ((int) pageFormat.getImageableWidth() - imageWidth) / 2;
+                int y = (int) pageFormat.getImageableY();
+                g2d.drawImage(image, x, y, null);
 
-                JTable.PrintMode mode = JTable.PrintMode.FIT_WIDTH;
-                try {
-                    MessageFormat header = new MessageFormat("Table Print");
-                    MessageFormat footer = new MessageFormat("- {0} -");
-                    Boolean cont = view.getTable().print(mode, header, footer);
-                    if (cont) {
-                        return PAGE_EXISTS;
-                    } else {
-                        return NO_SUCH_PAGE;
+                int numRows = model.getRowCount();
+                int numCols = model.getColumnCount();
+                int rowHeight = 40;
+                int cellPadding = 5;
+                int tableWidth = numCols * (60 + cellPadding);
+                int tableX = (int) pageFormat.getImageableX() + ((int) pageFormat.getImageableWidth() - tableWidth) / 2;
+                int tableY = y + imageHeight + cellPadding;
+                for (int row = 0; row < numRows; row++) {
+                    for (int col = 0; col < numCols; col++) {
+                        Object value = model.getValueAt(row, col);
+                        int cellX = tableX + col * (60 + cellPadding);
+                        int cellY = tableY + row * rowHeight;
+                        g2d.drawString(value.toString(), cellX, cellY + rowHeight);
                     }
-                } catch (PrinterException ex) {
-                    view.showMessage("Printing failed: " + ex.getMessage());
-                    return NO_SUCH_PAGE;
                 }
+        
+                return PAGE_EXISTS;
             }
         });
-        
             try {
                 job.print();
             } catch (PrinterException ex) {
                 this.view.showMessage("Printing failed: " + ex.getMessage());
             }
+    }
+
+    public static BufferedImage scaleImage(BufferedImage src, int w, int h)
+    {
+        BufferedImage img = 
+                new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        int x, y;
+        int ww = src.getWidth();
+        int hh = src.getHeight();
+        int[] ys = new int[h];
+        for (y = 0; y < h; y++)
+            ys[y] = y * hh / h;
+        for (x = 0; x < w; x++) {
+            int newX = x * ww / w;
+            for (y = 0; y < h; y++) {
+                int col = src.getRGB(newX, ys[y]);
+                img.setRGB(x, y, col);
+            }
+        }
+        return img;
     }
 
     private void handleLoad(){

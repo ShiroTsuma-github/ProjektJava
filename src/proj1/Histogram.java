@@ -13,8 +13,6 @@ import java.awt.*;
 public class Histogram extends JPanel {
 
     private DefaultCategoryDataset dataset;
-    private ImageIcon chartImg;
-    private JLabel label;
 
     public Histogram() {
         this.dataset = new DefaultCategoryDataset();
@@ -36,11 +34,21 @@ public class Histogram extends JPanel {
         renderer.setSeriesPaint(0, new Color(0, 0, 255));
 
         ChartPanel frame = new ChartPanel(chart);
-        chartImg = new ImageIcon(chart.createBufferedImage(200, 200));
-        label = new JLabel(chartImg);
-        // frame.setSize(50, 50);
         this.add(frame);
-        // this.add(label);
+    }
+
+    public Image getChartImage() {
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Histogram",
+                "Przedział",
+                "Częstotliwość",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false,
+                true,
+                false
+        );
+        return chart.createBufferedImage(400, 400);
     }
 
     public void setCategories()

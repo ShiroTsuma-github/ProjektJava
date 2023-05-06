@@ -34,6 +34,8 @@ public class TableModel extends AbstractTableModel{
         return data[row][column];
     }
 
+    
+
     public void setValueAt(Object value, int row, int column) throws NullPointerException, NumberFormatException, ArrayIndexOutOfBoundsException{
         try {
             int rowPos = (int) row;
