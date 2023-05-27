@@ -113,13 +113,13 @@ public class View extends JFrame{
         tipModel.add(new DefaultTip("Porada 8", "Kiedy aplikacja się zawiesza, zastanów się, czy na pewno ją używasz zgodnie z zasadami."));
         tipModel.add(new DefaultTip("Porada 9", "Zawsze zakładaj, że aplikacja działa idealnie, a wszelkie błędy są wynikiem twojej wyobraźni."));
         tipModel.add(new DefaultTip("Porada 10", "Nie trać czasu na zgłaszanie błędów - nikt nie uwierzy, że to wina aplikacji."));
-        tipModel.add(new DefaultTip("Porada 11", "To idealna aplikacja"));
-        tipModel.add(new DefaultTip("Porada 12", "Wszystko działa jak należy"));
-        tipModel.add(new DefaultTip("Porada 13", "W programie nie ma błędów"));
+        tipModel.add(new DefaultTip("Porada 11", "To idealna aplikacja."));
+        tipModel.add(new DefaultTip("Porada 12", "Wszystko działa jak należy."));
+        tipModel.add(new DefaultTip("Porada 13", "W programie nie ma błędów."));
         tipModel.add(new DefaultTip("Porada 14", "Jeśli coś nie działa, z pewnością jest to wina użytkownika."));
 
         Random random = new Random();
-        int randomNumber = random.nextInt(14) + 1;
+        int randomNumber = random.nextInt(13) + 1;
         Preferences preferences = Preferences.userRoot().node("Aplikacja MVC");
         tipOfTheDay.setModel(tipModel);
         tipOfTheDay.setCurrentTip(randomNumber);
@@ -373,11 +373,11 @@ public class View extends JFrame{
     private void createBody() {
 
         JLabel wartoscLabel = new JLabel("Wprowadź liczbę:");
-        wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        // wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         wartosc = new JFormattedTextField(0);
         wartosc.setMargin(new Insets(5, 5, 5, 5));
         JLabel wierszLabel = new JLabel("Numer wiersza:");
-        wierszLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // wierszLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         wiersz = new JSpinner(new SpinnerNumberModel(1, 1, this.tableModel.getRowCount(), 1));
 
         JLabel kolumnaLabel = new JLabel("Numer kolumny:");
