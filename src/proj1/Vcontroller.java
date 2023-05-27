@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
@@ -267,7 +266,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
         this.histogram.reset();
         for (int i = 0; i < this.model.getRowCount(); i++) {
             for (int j = 0; j < this.model.getColumnCount(); j++) {
-                this.histogram.updateDataset((int) this.model.getValueAt(i, j));
+                this.histogram.addValue((int) this.model.getValueAt(i, j));
             }
         }
     }
