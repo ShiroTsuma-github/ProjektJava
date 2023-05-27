@@ -2,9 +2,16 @@ package proj1;
 
 import javax.swing.*;
 
+import com.l2fprod.common.swing.JTaskPane;
+import com.l2fprod.common.swing.JTaskPaneGroup;
+import com.l2fprod.common.swing.JTipOfTheDay;
+import com.l2fprod.common.swing.tips.DefaultTip;
+import com.l2fprod.common.swing.tips.DefaultTipModel;
+
 import com.toedter.calendar.JCalendar;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +22,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Random;
+import java.util.prefs.Preferences;
 
 public class View extends JFrame{
     
@@ -25,13 +34,14 @@ public class View extends JFrame{
                       aboutMenuItem, authorMenuItem, sumMenuItem, averageMenuItem, minMenuItem, maxMenuItem;
     // zmienne do toolbara
     private JToolBar toolBar;
-    private JButton saveButton, printButton, loadButton, addButton, clearButton, fillButton, sumButton, averageButton,
+    private JButton taskButton, saveButton, printButton, loadButton, addButton, clearButton, fillButton, sumButton, averageButton,
                     minButton, maxButton, helpButton, authorButton;
     HelpDoc helpWindow = null;
     Author authorWindow = null;
     // Zmienne do body
     private JPanel mainPanel;
     private JTable table;
+    private JTaskPane taskPane;
     JList<String> optionsList;
     JTextArea resultsArea;
     JSpinner wiersz, kolumna;
@@ -79,9 +89,41 @@ public class View extends JFrame{
 
     private void CreateGUI()
     {
+        
         createMenuBar();
         createToolBar();
         createBody();
+        SwingUtilities.invokeLater(() -> {
+            createTipOfTheDay();
+        });
+    }
+
+    private void createTipOfTheDay()
+    {
+        JTipOfTheDay tipOfTheDay = new JTipOfTheDay();
+
+        // Create the tip model
+        DefaultTipModel tipModel = new DefaultTipModel();
+        tipModel.add(new DefaultTip("Porada 2", "Kiedy aplikacja wyświetla błąd, zawsze sprawdź najpierw swoje umiejętności."));
+        tipModel.add(new DefaultTip("Porada 3", "Jeśli masz problem z interfejsem, to znaczy, że nie jesteś wystarczająco inteligentny."));
+        tipModel.add(new DefaultTip("Porada 4", "Zawsze pamiętaj, że to ty jesteś odpowiedzialny za wszystkie błędy w aplikacji."));
+        tipModel.add(new DefaultTip("Porada 5", "Wszelkie problemy wynikają z twojej nieznajomości doskonałej aplikacji."));
+        tipModel.add(new DefaultTip("Porada 6", "Gdy aplikacja działa nieprawidłowo, zacznij od zastanowienia się, co zrobiłeś źle."));
+        tipModel.add(new DefaultTip("Porada 7", "Nie zgłaszaj błędów - to tylko marnowanie czasu wsparcia technicznego."));
+        tipModel.add(new DefaultTip("Porada 8", "Kiedy aplikacja się zawiesza, zastanów się, czy na pewno ją używasz zgodnie z zasadami."));
+        tipModel.add(new DefaultTip("Porada 9", "Zawsze zakładaj, że aplikacja działa idealnie, a wszelkie błędy są wynikiem twojej wyobraźni."));
+        tipModel.add(new DefaultTip("Porada 10", "Nie trać czasu na zgłaszanie błędów - nikt nie uwierzy, że to wina aplikacji."));
+        tipModel.add(new DefaultTip("Porada 11", "To idealna aplikacja"));
+        tipModel.add(new DefaultTip("Porada 12", "Wszystko działa jak należy"));
+        tipModel.add(new DefaultTip("Porada 13", "W programie nie ma błędów"));
+        tipModel.add(new DefaultTip("Porada 14", "Jeśli coś nie działa, z pewnością jest to wina użytkownika."));
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(14) + 1;
+        Preferences preferences = Preferences.userRoot().node("Aplikacja MVC");
+        tipOfTheDay.setModel(tipModel);
+        tipOfTheDay.setCurrentTip(randomNumber);
+        tipOfTheDay.showDialog(null, preferences, false);
     }
 
     private void createMenuBar() {
@@ -141,6 +183,87 @@ public class View extends JFrame{
         // Dodanie paska menu do okna
         setJMenuBar(menuBar);
         // Dodanie akcji do menu
+
+
+
+
+        taskPane = new JTaskPane();
+        // Tworzenie kategorii w panelu nawigacyjnym
+        JTaskPaneGroup group1 = new JTaskPaneGroup();
+        group1.setExpanded(true); // Rozwiń kategorię na starcie
+        group1.setText("Plik");
+
+        JButton zapisz = new JButton("Zapisz");
+        zapisz.setToolTipText("Zapisz");
+        group1.add(zapisz);
+
+        JButton drukuj = new JButton("Drukuj");
+        drukuj.setToolTipText("Drukuj");
+        group1.add(drukuj);
+
+        JButton wczytaj = new JButton("Wczytaj");
+        wczytaj.setToolTipText("Wczytaj");
+        group1.add(wczytaj);
+
+        taskPane.add(group1);
+
+        JTaskPaneGroup group2 = new JTaskPaneGroup();
+        group2.setExpanded(true);
+        group2.setText("Edycja");
+
+        JButton dodaj = new JButton("Dodaj");
+        dodaj.setToolTipText("Dodaj");
+        group2.add(dodaj);
+        JButton wyczysc = new JButton("Wyczyść");
+        wyczysc.setToolTipText("Wyczyść");
+        group2.add(wyczysc);
+
+        JButton wypelnij = new JButton("Wypełnij");
+        wypelnij.setToolTipText("Wypełnij");
+        group2.add(wypelnij);
+
+        taskPane.add(group2);
+
+        JTaskPaneGroup group3 = new JTaskPaneGroup();
+        group3.setExpanded(true); 
+        group3.setText("Obliczenia");
+
+        JButton suma = new JButton("Suma");
+        suma.setToolTipText("Suma");
+        group3.add(suma);
+        JButton srednia = new JButton("Średnia");
+        srednia.setToolTipText("Średnia");
+        group3.add(srednia);
+        JButton minimum = new JButton("Minimum");
+        minimum.setToolTipText("Minimum");
+        group3.add(minimum);
+        JButton maksimum = new JButton("Maksimum");
+        maksimum.setToolTipText("Maksimum");
+        group3.add(maksimum);
+        taskPane.add(group3);
+
+        JTaskPaneGroup group4 = new JTaskPaneGroup();
+        group4.setExpanded(true); 
+        group4.setText("Pomoc");
+
+        JButton autor = new JButton("O programie");
+        autor.setToolTipText("O programie");
+        group4.add(autor);
+        JButton pomoc = new JButton("Pomoc");
+        pomoc.setToolTipText("Pomoc");
+        group4.add(pomoc);
+        taskPane.add(group4);
+
+
+        taskPane.setVisible(false);
+
+        // Dodawanie panelu nawigacyjnego do kontenera głównego
+        add(taskPane, BorderLayout.WEST);
+
+
+
+
+
         newMenuItem.addActionListener(controller);
         openMenuItem.addActionListener(controller);
         saveMenuItem.addActionListener(controller);
@@ -154,6 +277,21 @@ public class View extends JFrame{
         maxMenuItem.addActionListener(controller);
         aboutMenuItem.addActionListener(controller);
         authorMenuItem.addActionListener(controller);
+
+        zapisz.addActionListener(controller);
+        drukuj.addActionListener(controller);
+        wczytaj.addActionListener(controller);
+        dodaj.addActionListener(controller);
+        wyczysc.addActionListener(controller);
+        wypelnij.addActionListener(controller);
+        suma.addActionListener(controller);
+        srednia.addActionListener(controller);
+        minimum.addActionListener(controller);
+        maksimum.addActionListener(controller);
+        autor.addActionListener(controller);
+        pomoc.addActionListener(controller);
+
+
     }
     private ImageIcon createImageIcon(String path, Integer... size) {
         ImageIcon img = new ImageIcon(getClass().getResource(path));
@@ -166,6 +304,10 @@ public class View extends JFrame{
     private void createToolBar() {
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
+        taskButton = new JButton(createImageIcon("/grafika/menu.png"));
+        taskButton.setToolTipText("Zadania");
+        toolBar.add(taskButton);
+        toolBar.add(Box.createHorizontalStrut(10));
         saveButton = new JButton(createImageIcon("/grafika/save.png"));
         saveButton.setToolTipText("Zapisz");
         toolBar.add(saveButton);
@@ -213,6 +355,7 @@ public class View extends JFrame{
         toolBar.add(helpButton);
         add(toolBar, BorderLayout.PAGE_START);
 
+        taskButton.addActionListener(controller);
         saveButton.addActionListener(controller);
         printButton.addActionListener(controller);
         loadButton.addActionListener(controller);
@@ -230,10 +373,9 @@ public class View extends JFrame{
     private void createBody() {
 
         JLabel wartoscLabel = new JLabel("Wprowadź liczbę:");
-        wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         wartosc = new JFormattedTextField(0);
         wartosc.setMargin(new Insets(5, 5, 5, 5));
-
         JLabel wierszLabel = new JLabel("Numer wiersza:");
         wierszLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         wiersz = new JSpinner(new SpinnerNumberModel(1, 1, this.tableModel.getRowCount(), 1));
@@ -302,7 +444,8 @@ public class View extends JFrame{
         // Main panel for things related to table
         // Added to mainPanel
         JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(table);
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
         tablePanel.add(buttonPanel, BorderLayout.EAST);
         tablePanel.add(tempPanel, BorderLayout.SOUTH);
 
@@ -350,6 +493,26 @@ public class View extends JFrame{
     public void addToResult(String text)
     {
         resultsArea.append(text);
+    }
+
+    public void toggleTaskPane()
+    {
+        boolean visible = taskPane.isVisible();
+        taskPane.setVisible(!visible);
+            // if (visible) {
+            //     remove(taskPane);
+            // } else {
+            //     add(taskPane, BorderLayout.WEST);
+            // }
+            if (visible) {
+                this.calendar.setPreferredSize(new Dimension(400, 200));
+            } else {
+                this.calendar.setPreferredSize(new Dimension(300, 200));
+            }
+            revalidate();
+            repaint();
+
+            // taskPane.setVisible(!visible);
     }
 
     public JTable getTable() {

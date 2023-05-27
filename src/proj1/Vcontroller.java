@@ -15,6 +15,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -130,6 +132,41 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
                 this.view.showMessage("Saving failed: " + ex.getMessage());
             }
         }
+    }
+
+    private void handlePrint2()
+    {
+        PrinterJob job = PrinterJob.getPrinterJob();
+        Boolean wasHere = false;
+        job.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics g, PageFormat pf, int pageIndex) {
+                if (pageIndex != 0) {
+                    return NO_SUCH_PAGE;
+                }
+                if(wasHere) return NO_SUCH_PAGE;
+                Boolean wasHere = true;
+
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.translate(pf.getImageableX(), pf.getImageableY());
+
+                // MessageFormat header = new MessageFormat("Table Print");
+                // MessageFormat footer = new MessageFormat("- {0} -");
+                // Boolean cont = table.print(mode, header, footer);
+                Boolean cont = false;
+                if (cont) {
+                    return PAGE_EXISTS;
+                } else {
+                    return NO_SUCH_PAGE;
+                }
+            }
+        });
+        
+            try {
+                job.print();
+            } catch (PrinterException ex) {
+                this.view.showMessage("Printing failed: " + ex.getMessage());
+            }
     }
 
     private void handlePrint()
@@ -273,6 +310,9 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
         {
             JButton button = (JButton) source;
             switch (button.getToolTipText()) {
+                case "Zadania":
+                    this.view.toggleTaskPane();
+                    break;
                 case "Zapisz":
                     handleSave();
                     break;
@@ -280,7 +320,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
                     handleSave();
                     break;
                 case "Drukuj":
-                    handlePrint();
+                    handlePrint2();
                     break;
                 case "Wczytaj":
                     handleLoad();
@@ -333,7 +373,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
                     handleSave();
                     break;
                 case "Drukuj":
-                    handlePrint();
+                    handlePrint2();
                     break;
                 case "Wczytaj":
                     handleLoad();
@@ -376,7 +416,9 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
             if (calendar.getDate() != null) {
                 if (this.view != null)
                 {
-                    this.view.updateResult("Wybrana data: " + calendar.getDate().toString());
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String formattedDate = formatter.format(calendar.getDate());
+                    this.view.updateResult("Wybrana data: " + formattedDate);
                 }
             }
         }

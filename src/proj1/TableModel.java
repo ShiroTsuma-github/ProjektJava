@@ -7,6 +7,7 @@ public class TableModel extends AbstractTableModel{
     private Object[][] data;
     private int tableUpdateCount = 0;
     private boolean editable = true;
+    private String[] columns = {"1", "2", "3", "4", "5"};
     
 
     public TableModel(int rows, int columns) {
@@ -16,6 +17,16 @@ public class TableModel extends AbstractTableModel{
                 data[i][j] = 0;
             }
         }
+    }
+
+    @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return data[0][columnIndex].getClass();
+        }
+
+    @Override
+    public String getColumnName(int column) {
+        return columns[column];
     }
 
     public void toggleCellsEdit(boolean editable)
@@ -163,4 +174,7 @@ public class TableModel extends AbstractTableModel{
         listenerList.remove(TableModelListener.class, listener);
     }
 }
+
+
+
 
