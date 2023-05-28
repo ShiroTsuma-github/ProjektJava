@@ -93,9 +93,10 @@ public class View extends JFrame{
         createMenuBar();
         createToolBar();
         createBody();
-        SwingUtilities.invokeLater(() -> {
-            createTipOfTheDay();
-        });
+        int delay = 1000; // Opóźnienie w milisekundach (4 sekundy)
+        Timer timer = new Timer(delay, e -> createTipOfTheDay());
+        timer.setRepeats(false); // Wywołanie tylko raz
+        timer.start();
     }
 
     private void createTipOfTheDay()
