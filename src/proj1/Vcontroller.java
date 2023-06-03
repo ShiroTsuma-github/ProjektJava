@@ -266,7 +266,7 @@ public class Vcontroller implements ActionListener, ListSelectionListener, Table
         this.histogram.reset();
         for (int i = 0; i < this.model.getRowCount(); i++) {
             for (int j = 0; j < this.model.getColumnCount(); j++) {
-                this.histogram.addValue((int) this.model.getValueAt(i, j));
+                this.histogram.updateDataset((int) this.model.getValueAt(i, j), i, j);
             }
         }
     }

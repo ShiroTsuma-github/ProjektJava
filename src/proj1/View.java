@@ -11,7 +11,6 @@ import com.l2fprod.common.swing.tips.DefaultTipModel;
 import com.toedter.calendar.JCalendar;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -120,7 +119,7 @@ public class View extends JFrame{
         tipModel.add(new DefaultTip("Porada 14", "Jeśli coś nie działa, z pewnością jest to wina użytkownika."));
 
         Random random = new Random();
-        int randomNumber = random.nextInt(13) + 1;
+        int randomNumber = random.nextInt(12) + 1;
         Preferences preferences = Preferences.userRoot().node("Aplikacja MVC");
         tipOfTheDay.setModel(tipModel);
         tipOfTheDay.setCurrentTip(randomNumber);

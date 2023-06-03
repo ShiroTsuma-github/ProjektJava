@@ -1,0 +1,13 @@
+
+INFO  2023-06-03 15:18:56 [main] proj1.Log4JApp:31 - To jest wiadomoœæ info
+WARN  2023-06-03 15:18:56 [main] proj1.Log4JApp:32 - To jest wiadomoœæ ostrze¿enia
+ERROR 2023-06-03 15:18:56 [main] proj1.Log4JApp:33 - To jest wiadomoœæ b³êdu
+FATAL 2023-06-03 15:18:56 [main] proj1.Log4JApp:34 - To jest wiadomoœæ krytyczna
+INFO  2023-06-03 15:19:04 [main] proj1.Log4JApp:31 - To jest wiadomoœæ info
+WARN  2023-06-03 15:19:04 [main] proj1.Log4JApp:32 - To jest wiadomoœæ ostrze¿enia
+ERROR 2023-06-03 15:19:04 [main] proj1.Log4JApp:33 - To jest wiadomoœæ b³êdu
+FATAL 2023-06-03 15:19:04 [main] proj1.Log4JApp:34 - To jest wiadomoœæ krytyczna
+INFO  2023-06-03 15:19:19 [main] proj1.Log4JApp:31 - To jest wiadomoœæ info
+WARN  2023-06-03 15:19:19 [main] proj1.Log4JApp:32 - To jest wiadomoœæ ostrze¿enia
+ERROR 2023-06-03 15:19:19 [main] proj1.Log4JApp:33 - To jest wiadomoœæ b³êdu
+FATAL 2023-06-03 15:19:19 [main] proj1.Log4JApp:34 - To jest wiadomoœæ krytyczna
