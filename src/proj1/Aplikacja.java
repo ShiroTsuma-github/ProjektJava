@@ -1,12 +1,8 @@
 package proj1;
 
 import javax.swing.*;
-import javax.swing.text.NumberFormatter;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
-import java.text.NumberFormat;
 import java.util.Scanner;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -125,8 +121,9 @@ public class Aplikacja extends JFrame implements ActionListener{
     }
 
     private ImageIcon createImageIcon(String path, Integer... size) {
-        ImageIcon img = new ImageIcon(getClass().getResource(path));
-        Image scaledImg = img.getImage().getScaledInstance(size.length > 0 ? size[0] : 30,
+//        ImageIcon img = new ImageIcon(System.getProperty("user.dir") + path);
+    	ImageIcon img = new ImageIcon(getClass().getResource(path));
+    	Image scaledImg = img.getImage().getScaledInstance(size.length > 0 ? size[0] : 30,
         size.length > 0 ? size[0] : 30, Image.SCALE_SMOOTH);
         img = new ImageIcon(scaledImg);
         return img;
@@ -188,7 +185,8 @@ public class Aplikacja extends JFrame implements ActionListener{
 
         JLabel wartoscLabel = new JLabel("Wprowadź liczbę:");
         wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        wartosc = createNumberTextField();
+//        wartosc = createNumberTextField();
+        wartosc = new JFormattedTextField(0);
         wartosc.setMargin(new Insets(5, 5, 5, 5));
 
         JLabel wierszLabel = new JLabel("Numer wiersza:");
@@ -200,6 +198,7 @@ public class Aplikacja extends JFrame implements ActionListener{
         kolumna = new JSpinner(new SpinnerNumberModel(1, 1, 6, 1));
         // left six just to show exception handling
         table = new JTable(5, 5);
+        this.handleClear();
         bodyAddButton = new JButton("Dodaj    ", createImageIcon("/grafika/add.png", 20));
         bodyAddButton.setToolTipText("Body dodaj");
         bodyClearButton = new JButton("Wyzeruj", createImageIcon("/grafika/clear.png", 20));
@@ -307,25 +306,13 @@ public class Aplikacja extends JFrame implements ActionListener{
 		return jMenu;
 	}
 
-    public JFormattedTextField createNumberTextField() {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        NumberFormat floatFormat = new DecimalFormat("#0.00", symbols);
-        NumberFormatter floatFormatter = new NumberFormatter(floatFormat);
-        floatFormatter.setValueClass(Float.class);
-        floatFormatter.setMinimum(Float.NEGATIVE_INFINITY);
-        floatFormatter.setMaximum(Float.MAX_VALUE);
-        floatFormatter.setAllowsInvalid(true);
-        floatFormatter.setCommitsOnValidEdit(true);
-        return new JFormattedTextField(floatFormatter);
-    }
 
     private void handleAdd()
     {
         try {
             int row = (int) wiersz.getValue();
             int column = (int) kolumna.getValue();
-            Object value = (float) wartosc.getValue();
+            Object value = (int) wartosc.getValue();
             table.getModel().setValueAt(value, row -1, column -1);
         } catch( NullPointerException np) {
             JOptionPane.showMessageDialog(this, "Brak danych do wprowadzenia", "Error", JOptionPane.ERROR_MESSAGE);
@@ -339,7 +326,7 @@ public class Aplikacja extends JFrame implements ActionListener{
     private void handleClear(){
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
-                table.getModel().setValueAt(null, i, j);
+                table.getModel().setValueAt(0, i, j);
             }
         }
     }
@@ -347,19 +334,17 @@ public class Aplikacja extends JFrame implements ActionListener{
     private void handleFill(){
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
-                double value = Math.random() * -200 + 100;
+                int value = (int) (Math.random() * -200 + 100);
                 table.getModel().setValueAt(value, i, j);
             }
         }
     }
     private void handleSum(){
-        double sum = 0.0;
+        long sum = 0;
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
                 Object value = table.getModel().getValueAt(i, j);
-                if (value != null) {
-                    sum += Double.parseDouble(value.toString());
-                }
+                sum += (int) value;
             }
         }
         resultsArea.setText("Suma: " + sum);
@@ -367,15 +352,13 @@ public class Aplikacja extends JFrame implements ActionListener{
 
     private void handleAvg()
     {
-        double sum = 0.0;
+        long sum = 0;
         int count = 0;
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
                 Object value = table.getModel().getValueAt(i, j);
-                if (value != null) {
-                    sum += Double.parseDouble(value.toString());
-                    count++;
-                }
+                sum += (int) value;
+                count++;
             }
         }
         double average = count > 0 ? sum / count : 0;
@@ -384,16 +367,16 @@ public class Aplikacja extends JFrame implements ActionListener{
 
     private void handleMin(Boolean... args)
     {
-        double min = Double.POSITIVE_INFINITY;
+        long min = Integer.MAX_VALUE;
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
                 Object value = table.getModel().getValueAt(i, j);
-                if (value != null && Double.parseDouble(value.toString()) < min) {
-                    min = Double.parseDouble(value.toString());
+                if ((int) value < min) {
+                    min = (int) value;
                 }
             }
         }
-        if (min == Double.POSITIVE_INFINITY) min = 0;
+        if (min == Integer.MAX_VALUE) min = 0;
         if(args.length == 0)
         {
             resultsArea.setText("Minimum: " + min);
@@ -408,16 +391,16 @@ public class Aplikacja extends JFrame implements ActionListener{
 
     private void handleMax(Boolean... args)
     {
-        double max = Double.NEGATIVE_INFINITY;
+        long max = Integer.MIN_VALUE;
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
                 Object value = table.getModel().getValueAt(i, j);
-                if (value != null && Double.parseDouble(value.toString()) > max) {
-                    max = Double.parseDouble(value.toString());
+                if ((int) value > max) {
+                    max = (int) value;
                 }
             }
         }
-        if (max == Double.NEGATIVE_INFINITY) max = 0;
+        if (max == Integer.MIN_VALUE) max = 0;
         if(args.length == 0)
         {
             resultsArea.setText("Maksimum: " + max);
@@ -576,9 +559,9 @@ public class Aplikacja extends JFrame implements ActionListener{
             handleLoad();
         }
     }
-    // public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    //     new Aplikacja();
-    // }
+        new Aplikacja();
+    }
     
 }

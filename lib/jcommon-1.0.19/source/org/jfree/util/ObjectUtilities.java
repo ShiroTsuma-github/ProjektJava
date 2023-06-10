@@ -482,6 +482,11 @@ public final class ObjectUtilities {
         }
     }
 
+    
+    /** 
+     * @param version
+     * @return String[]
+     */
     private static String[] parseVersions (String version)
     {
       if (version == null)

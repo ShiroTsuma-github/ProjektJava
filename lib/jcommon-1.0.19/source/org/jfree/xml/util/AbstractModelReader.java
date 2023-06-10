@@ -505,6 +505,23 @@ public abstract class AbstractModelReader {
         // nothing required
     }
 
+    
+    /** 
+     * @param className
+     * @param readHandler
+     * @param className
+     * @param register
+     * @param name
+     * @param attribName
+     * @param name
+     * @param name
+     * @param className
+     * @param typeName
+     * @param propertyName
+     * @param className
+     * @return boolean
+     * @throws ObjectDescriptionException;protected Class loadClass(final String className)
+     */
     /**
      * Handles a manual mapping definition. The manual mapping maps specific
      * read and write handlers to a given base class. Manual mappings always

@@ -116,6 +116,10 @@ public class ObjectFactoryLoader extends AbstractModelReader implements ObjectFa
         rebuildSuperClasses();
     }
 
+    
+    /** 
+     * @throws ObjectDescriptionException
+     */
     private void rebuildSuperClasses() throws ObjectDescriptionException {
         this.propertyDefinition = new ArrayList();
         this.attributeDefinition = new ArrayList();

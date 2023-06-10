@@ -2,6 +2,8 @@ package proj1;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
+
 import com.l2fprod.common.swing.JTaskPane;
 import com.l2fprod.common.swing.JTaskPaneGroup;
 import com.l2fprod.common.swing.JTipOfTheDay;
@@ -24,9 +26,19 @@ import java.awt.event.WindowEvent;
 import java.util.Random;
 import java.util.prefs.Preferences;
 
+/**
+ * Klasa reprezentująca widok aplikacji.
+ * Rozszerza klasę JFrame, która dostarcza podstawowe funkcjonalności okna aplikacji.
+ * Zawiera wszystkie elementy interfejsu użytkownika, takie jak menu, toolbar, panel główny, tabela, panele zadań, listę opcji, obszar wyników itp.
+ */
 public class View extends JFrame{
+
+    private Log4JApp loggerApp = new Log4JApp();
+    private Logger logger = Logger.getLogger(View.class);
     
-    // zmienne do menu
+    /**
+     * Zmienne menu.
+     */
     private JMenuBar menuBar;
     private JMenu fileMenu, editMenu, helpMenu, viewMenu, calcMenu;
     private JMenuItem newMenuItem, openMenuItem, saveMenuItem, exitMenuItem, cutMenuItem, copyMenuItem, pasteMenuItem,
@@ -57,6 +69,11 @@ public class View extends JFrame{
     static final int HEIGHT = 800;
     static final String TITLE = "Aplikacja MVC";
 
+
+    /**
+     * Konstruktor klasy View.
+     * Inicjalizuje obiekty i ustawia wygląd interfejsu użytkownika.
+     */
     public View(TableModel model,
                 ListModel listModel,
                 Vcontroller controller,
@@ -67,6 +84,8 @@ public class View extends JFrame{
         this.controller = controller;
         this.calendar = calendar;
         this.histogram = histogram;
+        logger = loggerApp.formatLogger(logger);
+        logger.info("Inicjalizacja widoku");
         setTitle(TITLE);
         setSize(WIDTH, HEIGHT);
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
@@ -75,31 +94,47 @@ public class View extends JFrame{
     
         CreateGUI();
         addWindowListener(new WindowAdapter(){
+
             public void windowClosing(WindowEvent e){
+                logger.info("Zamykanie aplikacji");
                 System.exit(0);
             }
         });
     }
+    /**
+     * Metoda wyświetlająca widok aplikacji.
+     * Ustawia widoczność okna na true.
+     */
     public void showView()
     {
+        logger.info("Wyświetlanie widoku");
         setVisible(true);
     }
 
-
+    /**
+     * Tworzy interfejs użytkownika, zawierający pasek menu, pasek narzędzi, panel z elementami interaktywnymi
+     * oraz wywołuje funkcję odpowiedzialną za wyświetlanie porady dnia po uruchomieniu okna.
+     * Metoda jest wywoływana w celu zainicjowania GUI.
+     */
     private void CreateGUI()
     {
-        
+        logger.info("Tworzenie GUI");
         createMenuBar();
         createToolBar();
         createBody();
-        int delay = 1000; // Opóźnienie w milisekundach (4 sekundy)
-        Timer timer = new Timer(delay, e -> createTipOfTheDay());
-        timer.setRepeats(false); // Wywołanie tylko raz
-        timer.start();
+        SwingUtilities.invokeLater(() -> {
+            createTipOfTheDay();
+        });
     }
 
+    /**
+     * Tworzy okno z losowym poradnikiem dnia.
+     * Tworzy obiekt JTipOfTheDay i ustawia model porad.
+     * Wyświetla okno dialogowe z poradą dnia.
+     */
     private void createTipOfTheDay()
     {
+        logger.info("Inicjalizacja porady dnia");
         JTipOfTheDay tipOfTheDay = new JTipOfTheDay();
 
         // Create the tip model
@@ -119,14 +154,19 @@ public class View extends JFrame{
         tipModel.add(new DefaultTip("Porada 14", "Jeśli coś nie działa, z pewnością jest to wina użytkownika."));
 
         Random random = new Random();
-        int randomNumber = random.nextInt(12) + 1;
+        int randomNumber = random.nextInt(13) + 1;
         Preferences preferences = Preferences.userRoot().node("Aplikacja MVC");
         tipOfTheDay.setModel(tipModel);
         tipOfTheDay.setCurrentTip(randomNumber);
         tipOfTheDay.showDialog(null, preferences, false);
     }
 
+    /**
+     * Tworzy pasek menu i dodaje menu oraz akcje do poszczególnych elementów.
+     * Tworzy również panel nawigacyjny i dodaje przyciski z kategoriami i akcjami do nich.
+     */
     private void createMenuBar() {
+        logger.info("Tworzenie paska menu");
         menuBar = new JMenuBar();
         fileMenu = createJMenu("Plik", KeyEvent.VK_P, true);
         editMenu = createJMenu("Edycja", KeyEvent.VK_E, false);
@@ -229,6 +269,8 @@ public class View extends JFrame{
         group3.setText("Obliczenia");
 
         JButton suma = new JButton("Suma");
+//        suma.setBorder(null);
+//        suma.setContentAreaFilled(false);
         suma.setToolTipText("Suma");
         group3.add(suma);
         JButton srednia = new JButton("Średnia");
@@ -290,9 +332,16 @@ public class View extends JFrame{
         maksimum.addActionListener(controller);
         autor.addActionListener(controller);
         pomoc.addActionListener(controller);
-
-
     }
+
+    /**
+     * Tworzy obiekt ImageIcon na podstawie ścieżki do pliku obrazu.
+     * Może skalować obraz do określonego rozmiaru.
+     *
+     * @param path ścieżka do pliku obrazu
+     * @param size opcjonalny parametr określający wymiary skalowanego obrazu
+     * @return obiekt ImageIcon
+     */
     private ImageIcon createImageIcon(String path, Integer... size) {
         ImageIcon img = new ImageIcon(getClass().getResource(path));
         Image scaledImg = img.getImage().getScaledInstance(size.length > 0 ? size[0] : 30,
@@ -301,7 +350,11 @@ public class View extends JFrame{
         return img;
     }
 
+    /**
+     * Tworzy pasek narzędziowy i dodaje na nim przyciski z ikonami.
+     */
     private void createToolBar() {
+        logger.info("Tworzenie paska narzędziowego");
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
         taskButton = new JButton(createImageIcon("/grafika/menu.png"));
@@ -370,7 +423,13 @@ public class View extends JFrame{
         helpButton.addActionListener(controller);
     }
 
+    /**
+     * Tworzy panel zawierający interaktywne elementy związane z edycją danych w tabeli.
+     * Tworzy etykiety, pola tekstowe, przyciski, tabelę, obszar wyników, listę opcji i inne elementy interfejsu.
+     * Dodaje akcje do poszczególnych elementów.
+     */
     private void createBody() {
+        logger.info("Tworzenie panelu z interaktywnymi elementami");
 
         JLabel wartoscLabel = new JLabel("Wprowadź liczbę:");
         // wartoscLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -466,6 +525,13 @@ public class View extends JFrame{
         bodySaveButton.addActionListener(controller);
     }
 
+    /**
+     * Tworzy menu o podanej nazwie, skrócie klawiaturowym i włączonym/wyłączonym stanie.
+     * @param name nazwa menu
+     * @param keyEvent skrót klawiaturowy
+     * @param enable flaga określająca, czy menu ma być włączone (true) czy wyłączone (false)
+     * @return utworzone menu
+     */
     public JMenu createJMenu(String name, int keyEvent, boolean enable) {
 		JMenu jMenu = new JMenu(name);
 		jMenu.setMnemonic(keyEvent);
@@ -473,37 +539,66 @@ public class View extends JFrame{
 		return jMenu;
 	}
 
+    /**
+     * Zwraca wartość wprowadzoną w polu tekstowym.
+     * @return wprowadzona wartość
+     */
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    /**
+     * Zwraca wartość wprowadzoną w polu tekstowym.
+     * @return wprowadzona wartość
+     */
     public String getInputValue() {
         return wartosc.getText();
     }
+
+    /**
+     * Zwraca wartość wprowadzoną w spinnerze dla numeru wiersza.
+     * @return numer wiersza
+     */
     public int getInputRow() {
         return (int) wiersz.getValue();
     }
+    /**
+     * Zwraca wartość wprowadzoną w spinnerze dla numeru kolumny.
+     * @return numer kolumny
+     */
     public int getInputColumn() {
         return (int) kolumna.getValue();
     }
 
+    /**
+     * Aktualizuje obszar wyników poprzez dodanie podanego tekstu.
+     * @param text tekst do dodania
+     */
     public void updateResult(String text)
     {
-        resultsArea.setText(text);
+        resultsArea.append(text + "\n");
     }
+
+    /**
+     * Dodaje tekst do obszaru wyników.
+     * @param text tekst do dodania
+     */
     public void addToResult(String text)
     {
         resultsArea.append(text);
     }
 
+    /**
+     * Przełącza widoczność panelu zadań (taskPane). Jeśli panel jest widoczny, zostaje ukryty, a jeśli jest ukryty, zostaje pokazany.
+     * Gdy panel staje się widoczny, ustawia preferowany rozmiar kalendarza na (400, 200), a gdy jest ukryty - na (300, 200).
+     * Wywołuje ponowne walidowanie komponentów oraz odświeżenie ich wyglądu.
+     */
     public void toggleTaskPane()
     {
+        logger.info("Zmiana widoczności panelu zadań");
         boolean visible = taskPane.isVisible();
         taskPane.setVisible(!visible);
-            // if (visible) {
-            //     remove(taskPane);
-            // } else {
-            //     add(taskPane, BorderLayout.WEST);
-            // }
+
             if (visible) {
                 this.calendar.setPreferredSize(new Dimension(400, 200));
             } else {
@@ -511,15 +606,22 @@ public class View extends JFrame{
             }
             revalidate();
             repaint();
-
-            // taskPane.setVisible(!visible);
     }
 
+    /**
+     * Zwraca referencję do tabeli (JTable).
+     * @return referencja do tabeli
+     */
     public JTable getTable() {
         return table;
     }
+
+    /**
+     * Wyświetla okno pomocy. Jeśli okno pomocy (helpWindow) już istnieje, staje się widoczne, w przeciwnym razie tworzy nowe okno pomocy i je wyświetla.
+     */
     public void getHelp()
     {
+        logger.info("Wyświetlenie okna pomocy")
         if (helpWindow != null) {
             helpWindow.setVisible(true);
         } else {
@@ -527,8 +629,13 @@ public class View extends JFrame{
             helpWindow.setVisible(true);
         }
     }
+
+    /**
+     * Wyświetla okno informacyjne o autorze. Jeśli okno autora (authorWindow) już istnieje, staje się widoczne, w przeciwnym razie tworzy nowe okno autora i je wyświetla.
+     */
     public void getAbout()
     {
+        logger.info("Wyświetlenie okna informacji o autorze")
         if (authorWindow != null) {
             authorWindow.setVisible(true);
         } else {

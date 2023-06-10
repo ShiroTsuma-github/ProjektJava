@@ -1,13 +1,36 @@
-
-INFO  2023-06-03 15:18:56 [main] proj1.Log4JApp:31 - To jest wiadomoœæ info
-WARN  2023-06-03 15:18:56 [main] proj1.Log4JApp:32 - To jest wiadomoœæ ostrze¿enia
-ERROR 2023-06-03 15:18:56 [main] proj1.Log4JApp:33 - To jest wiadomoœæ b³êdu
-FATAL 2023-06-03 15:18:56 [main] proj1.Log4JApp:34 - To jest wiadomoœæ krytyczna
-INFO  2023-06-03 15:19:04 [main] proj1.Log4JApp:31 - To jest wiadomoœæ info
-WARN  2023-06-03 15:19:04 [main] proj1.Log4JApp:32 - To jest wiadomoœæ ostrze¿enia
-ERROR 2023-06-03 15:19:04 [main] proj1.Log4JApp:33 - To jest wiadomoœæ b³êdu
-FATAL 2023-06-03 15:19:04 [main] proj1.Log4JApp:34 - To jest wiadomoœæ krytyczna
-INFO  2023-06-03 15:19:19 [main] proj1.Log4JApp:31 - To jest wiadomoœæ info
-WARN  2023-06-03 15:19:19 [main] proj1.Log4JApp:32 - To jest wiadomoœæ ostrze¿enia
-ERROR 2023-06-03 15:19:19 [main] proj1.Log4JApp:33 - To jest wiadomoœæ b³êdu
-FATAL 2023-06-03 15:19:19 [main] proj1.Log4JApp:34 - To jest wiadomoœæ krytyczna
+INFO  2023-06-10 14:54:50 [main] proj1.Vcontroller:55 - Uruchomiono program
+INFO  2023-06-10 14:54:50 [main] proj1.Vcontroller:381 - Aktualizacja wykresu
+INFO  2023-06-10 14:54:50 [main] proj1.View:88 - Inicjalizacja widoku
+INFO  2023-06-10 14:54:50 [main] proj1.View:121 - Tworzenie GUI
+INFO  2023-06-10 14:54:50 [main] proj1.View:169 - Tworzenie paska menu
+INFO  2023-06-10 14:54:50 [main] proj1.View:357 - Tworzenie paska narzêdziowego
+INFO  2023-06-10 14:54:51 [main] proj1.View:432 - Tworzenie panelu z interaktywnymi elementami
+INFO  2023-06-10 14:54:51 [main] proj1.Vcontroller:552 - Aktualizacja daty
+INFO  2023-06-10 14:54:51 [main] proj1.Vcontroller:552 - Aktualizacja daty
+INFO  2023-06-10 14:54:51 [AWT-EventQueue-0] proj1.View:137 - Inicjalizacja porady dnia
+INFO  2023-06-10 14:54:51 [main] proj1.View:110 - Wyœwietlanie widoku
+INFO  2023-06-10 14:54:51 [main] proj1.Vcontroller:552 - Aktualizacja daty
+INFO  2023-06-10 14:54:53 [AWT-EventQueue-0] proj1.View:99 - Zamykanie aplikacji
+INFO  2023-06-10 14:55:21 [main] proj1.Vcontroller:55 - Uruchomiono program
+INFO  2023-06-10 14:55:21 [main] proj1.Vcontroller:381 - Aktualizacja wykresu
+INFO  2023-06-10 14:55:21 [main] proj1.View:88 - Inicjalizacja widoku
+INFO  2023-06-10 14:55:21 [main] proj1.View:121 - Tworzenie GUI
+INFO  2023-06-10 14:55:21 [main] proj1.View:169 - Tworzenie paska menu
+INFO  2023-06-10 14:55:21 [main] proj1.View:357 - Tworzenie paska narzêdziowego
+INFO  2023-06-10 14:55:22 [main] proj1.View:432 - Tworzenie panelu z interaktywnymi elementami
+INFO  2023-06-10 14:55:22 [main] proj1.Vcontroller:552 - Aktualizacja daty
+INFO  2023-06-10 14:55:22 [main] proj1.Vcontroller:552 - Aktualizacja daty
+INFO  2023-06-10 14:55:22 [main] proj1.View:110 - Wyœwietlanie widoku
+INFO  2023-06-10 14:55:22 [AWT-EventQueue-0] proj1.View:137 - Inicjalizacja porady dnia
+INFO  2023-06-10 14:55:22 [main] proj1.Vcontroller:552 - Aktualizacja daty
+INFO  2023-06-10 14:55:25 [AWT-EventQueue-0] proj1.Vcontroller:439 - Wykonanie akcji
+INFO  2023-06-10 14:55:25 [AWT-EventQueue-0] proj1.Vcontroller:112 - Wype³nianie modelu losowymi wartoœciami
+INFO  2023-06-10 14:55:25 [AWT-EventQueue-0] proj1.Vcontroller:399 - Aktualizacja danych w tabeli
+INFO  2023-06-10 14:55:25 [AWT-EventQueue-0] proj1.Vcontroller:381 - Aktualizacja wykresu
+INFO  2023-06-10 14:55:26 [AWT-EventQueue-0] proj1.Vcontroller:439 - Wykonanie akcji
+INFO  2023-06-10 14:55:26 [AWT-EventQueue-0] proj1.Vcontroller:103 - Czyszczenie modelu
+INFO  2023-06-10 14:55:26 [AWT-EventQueue-0] proj1.Vcontroller:399 - Aktualizacja danych w tabeli
+INFO  2023-06-10 14:55:26 [AWT-EventQueue-0] proj1.Vcontroller:381 - Aktualizacja wykresu
+INFO  2023-06-10 14:55:26 [AWT-EventQueue-0] proj1.Vcontroller:399 - Aktualizacja danych w tabeli
+INFO  2023-06-10 14:55:26 [AWT-EventQueue-0] proj1.Vcontroller:381 - Aktualizacja wykresu
+INFO  2023-06-10 14:55:29 [AWT-EventQueue-0] proj1.View:99 - Zamykanie aplikacji

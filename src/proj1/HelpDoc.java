@@ -12,14 +12,28 @@ import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+/**
+ * Klasa reprezentująca okno dialogowe Pomoc.
+ * Wyświetla dokumentację pomocy w postaci JEditorPane z możliwością nawigacji po hiperłączach.
+ */
 public class HelpDoc extends JDialog{
         
-    private JEditorPane editorPane;
+    private static final long serialVersionUID = 1L;
+	private JEditorPane editorPane;
     private URL opisUrl;
 
+
+    /**
+     * Konstruktor klasy HelpDoc.
+     * Inicjalizuje okno dialogowe Pomoc, ustawia jego rozmiar, tytuł, widoczność i możliwość zmiany rozmiaru.
+     * Ustala położenie okna dialogowego na środku ekranu.
+     * Tworzy JEditorPane i przypisuje mu URL dokumentacji pomocy.
+     * Dodaje obsługę kliknięć hiperłączy w JEditorPane.
+     * Dodaje JEditorPane do okna dialogowego.
+     */
     public HelpDoc(){
         super();
-        setSize(400, 300);
+        setSize(800, 600);
         setTitle("Pomoc");
         setVisible(true);
         setResizable(true);
@@ -37,9 +51,7 @@ public class HelpDoc extends JDialog{
 
         editorPane = new JEditorPane();
         editorPane.setEditable(false);
-        opisUrl = proj1.HelpDoc.class.getResource(
-                "/pomoc/index.html");
-
+        opisUrl = proj1.HelpDoc.class.getResource("/pomoc/index.html");
         setURLPage();
 
 
@@ -63,6 +75,11 @@ public class HelpDoc extends JDialog{
 
         this.add(new JScrollPane(editorPane), BorderLayout.CENTER);
     }
+    /**
+     * Ustawia URL strony do wyświetlenia w JEditorPane.
+     * Próbuje załadować stronę z podanego URL.
+     * Jeśli nie powiedzie się, wyświetla odpowiedni komunikat.
+     */
     private void setURLPage() {
         try {
             editorPane.setPage(opisUrl);
@@ -72,4 +89,5 @@ public class HelpDoc extends JDialog{
         } 
     }
 }
+
 

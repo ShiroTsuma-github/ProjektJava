@@ -89,6 +89,11 @@ public class ColorWriteHandler extends AbstractXmlWriteHandler  {
         writer.writeTag(tagName, attribs, true);
     }
 
+    
+    /** 
+     * @param color
+     * @return String
+     */
     private String encodeColor(final Color color) {
         return "#" + encodeInt(color.getRed()) 
             + encodeInt(color.getGreen()) + encodeInt(color.getBlue());

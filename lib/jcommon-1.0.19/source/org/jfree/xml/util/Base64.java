@@ -270,6 +270,11 @@ public class Base64 {
         }
     }
 
+    
+    /** 
+     * @param file
+     * @return byte[]
+     */
     private static byte[] readBytes(final File file) {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {

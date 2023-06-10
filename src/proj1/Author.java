@@ -18,6 +18,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
+/**
+ * Klasa Author reprezentuje okno dialogowe wyświetlające informacje o programie.
+ * Rozszerza klasę JDialog i implementuje interfejs ActionListener.
+ */
 public class Author extends JDialog implements ActionListener{
     
 	private JLabel l0, l1, l2, l3, l4, l5;
@@ -29,6 +33,10 @@ public class Author extends JDialog implements ActionListener{
 	private Font font4 = new Font("TimesRoman", Font.PLAIN, 12);
 	private Border line = null;
 
+	/**
+     * Konstruktor klasy Author.
+     * Inicjalizuje i konfiguruje elementy interfejsu użytkownika.
+     */
     public Author()
     {
         setTitle("Informacje o programie");
@@ -57,7 +65,7 @@ public class Author extends JDialog implements ActionListener{
 
         try {
 			lIcon = new JLabel(new ImageIcon(
-				getClass().getResource("/grafika/author_logo.jpg")));
+				getClass().getResource("/grafika/author_logo.png")));
 		} 
 		catch(Exception e) { 
 			lIcon = new JLabel();
@@ -105,6 +113,12 @@ public class Author extends JDialog implements ActionListener{
 		contentPane.add(jBOk);
 		contentPane.add(lIcon);
 	}
+	/**
+     * Obsługuje zdarzenie ActionListener.
+     * Sprawdza źródło zdarzenia i wykonuje odpowiednie akcje w przypadku naciśnięcia przycisku "Ok".
+     *
+     * @param eAE Zdarzenie ActionListener.
+     */
     public void actionPerformed(ActionEvent eAE) {
 		if(eAE.getSource() == jBOk) {
 			setVisible(false);

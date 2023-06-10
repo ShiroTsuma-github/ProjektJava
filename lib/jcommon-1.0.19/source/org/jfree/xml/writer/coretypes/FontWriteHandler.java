@@ -88,6 +88,11 @@ public class FontWriteHandler extends AbstractXmlWriteHandler  {
         writer.writeTag(tagName, attribs, true);
     }
 
+    
+    /** 
+     * @param font
+     * @return String
+     */
     private String getFontStyle(final Font font) {
         if (font.isBold() && font.isItalic()) {
             return "bold-italic";

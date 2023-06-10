@@ -141,6 +141,12 @@ public abstract class RootXmlWriteHandler {
         addManualMapping(Font.class, FontWriteHandler.class);
     }
 
+    
+    /** 
+     * @param classToWrite
+     * @param handler
+     * @return ObjectFactory
+     */
     /**
      * Returns the object factory.
      * 
